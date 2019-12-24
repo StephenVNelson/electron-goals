@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Thingy</title>
+    <link rel="stylesheet" href="tasks.css">
+  </head>
+  <body>
+
+    <!-- Goals -->
+    <div class="sidenav">
+      <ol class="sidenav__goals">
+        <li>This is my first goal.</li>
+      </ol>
+    </div>
+
+    <!-- Tasks -->
+    <div class="tasks">
+      <ol class="tasks__list">
+
+        <!-- Template for task -->
+        <template class="tasks__task-template">
+          <li class="tasks__task-description"></li>
+        </template>
+
+        <!-- Template for create task -->
+        <template class="tasks__new-task-template">
+          <li>
+            <input type="text" name="description">
+            <button>submit</button>
+          </li>
+        </template>
+
+        <li class="tasks__add-button" ><button>+</button></li>
+      </ol>
+    </div>
+
+    <script src="./renderer.js"></script>
+    <script src="./tasks.js"></script>
+  </body>
+</html>

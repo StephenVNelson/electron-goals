@@ -1,6 +1,19 @@
-// This file is required by the index.html file and will
-// be executed in the renderer process for that window.
-// No Node.js APIs are available in this process because
-// `nodeIntegration` is turned off. Use `preload.js` to
-// selectively enable features needed in the rendering
-// process.
+const electron = require('electron')
+const ipc = electron.ipcRenderer
+const tasks = require('./tasks.js')
+
+window.addEventListener('DOMContentLoaded', () => {
+  ipc.send('startDBLoad')
+})
+
+ipc.on('loadDB', (ext, data)=>{
+  tasks.jsonToTasks(data)
+})
+
+
+tasks.addButton.addEventListener('click', _=> {
+  tasks.createForm(_=> {
+    let data = tasks.gatherTaskData(event)
+    ipc.send('insertIntoDB', data)
+  })
+})

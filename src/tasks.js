@@ -5,23 +5,9 @@ let allTasksNodes = []
 const allTasks = document.querySelector(".tasks")
 const addButton = allTasks.querySelector(".tasks__add-button button")
 const taskList = allTasks.querySelector(".tasks__list")
-const enumeratedList = taskList.querySelector(".tasks__enumerated")
-const buttonLi = taskList.lastElementChild
 const newTaskTemplate = allTasks.querySelector('template.tasks__new-task-template')
 const taskTemplate = allTasks.querySelector('template.tasks__task-template')
 
-
-function submitNewTask(event) {
-  let form = event.target.parentElement
-  let inputValue = form.querySelector("input[name=description]").value
-  //send info to the system.
-  // I want to keep the send signals in the renderer, but the listening signals are all here...
-
-
-  // let newNode = document.importNode(taskTemplate.content, true)
-  // newNode.querySelector(".tasks__task-description").textContent = inputValue
-  // taskList.replaceChild(newNode, form)
-}
 
 function gatherTaskData(event) {
   let form = event.target.parentElement
@@ -38,10 +24,10 @@ function createForm(eventCallback) {
   newNodeSubmitButton.addEventListener('click', eventCallback)
   newNodeTextInput.onkeydown = function(e){
    if(e.keyCode == 13){
-     gatherTaskData()
+     eventCallback()
    }
   };
-  enumeratedList.appendChild(newNode)
+  taskList.appendChild(newNode)
 }
 
 function createTask(task) {
@@ -52,12 +38,12 @@ function createTask(task) {
 }
 
 function updateTasks() {
-  allTasksNodes.forEach( task => {enumeratedList.appendChild(task)})
+  allTasksNodes.forEach( task => {taskList.appendChild(task)})
 }
 
 function clearTaskNodes() {
   allTasksNodes = []
-  while (enumeratedList.firstChild) {enumeratedList.removeChild(enumeratedList.firstChild)}
+  while (taskList.firstChild) {taskList.removeChild(taskList.firstChild)}
 }
 
 function jsonToTasks(json) {

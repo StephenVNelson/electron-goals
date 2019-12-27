@@ -6,36 +6,49 @@
     <link rel="stylesheet" href="tasks.css">
   </head>
   <body>
+    <div class="container">
+      <!-- Goals -->
+      <div class="sidenav">
+        <ol class="sidenav__goals">
+          <li>This is my first goal.</li>
+        </ol>
+      </div>
 
-    <!-- Goals -->
-    <div class="sidenav">
-      <ol class="sidenav__goals">
-        <li>This is my first goal.</li>
-      </ol>
-    </div>
+      <!-- Tasks -->
+      <div class="tasks">
+        <ol>
 
-    <!-- Tasks -->
-    <div class="tasks">
-      <ol>
+          <!-- Template for task -->
+          <template class="tasks__task-template">
+            <li>
+              <div class="tasks__task-container">
+                <div class="tasks__task-description"></div>
+                <div class="tasks__task-options">
+                  <span class="tasks__edit">O</span>
+                  <span class="tasks__delete">X</span>
+                </div>
+              </div>
+            </li>
+          </template>
 
-        <!-- Template for task -->
-        <template class="tasks__task-template">
-          <li class="tasks__task-description"></li>
-        </template>
+          <!-- Template for create task -->
+          <template class="tasks__new-task-template">
+            <li>
+              <input type="text" name="description">
+              <button>submit</button>
+            </li>
+          </template>
 
-        <!-- Template for create task -->
-        <template class="tasks__new-task-template">
-          <li>
-            <input type="text" name="description">
-            <button>submit</button>
-          </li>
-        </template>
+          <!-- div that stores all the tasks -->
+          <div class="tasks__list">
+          </div>
 
-        <!-- div that stores all the tasks -->
-        <div class="tasks__list">
-        </div>
-        <li class="tasks__add-button" ><button>+</button></li>
-      </ol>
+          <li class="tasks__add-button" ><button>+</button></li>
+
+        </ol>
+        
+      </div>
+
     </div>
 
     <script src="./renderer.js"></script>

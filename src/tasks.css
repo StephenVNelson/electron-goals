@@ -1,45 +1,54 @@
+* {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        outline: 0;
+        font-size: 100%;
+        vertical-align: baseline;
+        background: transparent;
+    }
+
 body {
   font-family: "Lato", sans-serif;
   background-color: white;
+  padding: 0;
+  margin: 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: row-reverse;
 }
 
 .sidenav {
-  height: 100%;
-  width: 300px;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  right: 0;
+  position: relative;
   background-color: #111;
-  overflow-x: hidden;
-  padding-top: 20px;
+  flex-basis: 20rem;
+  flex-grow: 1;
 }
 
 .sidenav__goals {
   padding: 6px 8px 6px 16px;
-  text-decoration: none;
   font-size: 1rem;
   color: #818181;
-  display: block;
-}
-
-.sidenav a:hover {
-  color: #f1f1f1;
-}
-
-.main {
-  margin-left: 160px; /* Same as the width of the sidenav */
-  font-size: 28px; /* Increased text to enable scrolling */
-  padding: 0px 10px;
-}
-
-@media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
 }
 
 /* TASKS */
 
+.tasks {
+  margin: 2rem;
+  padding: 1rem;
+  /* ↓ grow from nothing */
+  flex-basis: 0;
+  flex-grow: 999;
+  min-width: calc(50% - 1rem);
+}
+
 .tasks__add-button {
   list-style-type: none;
+}
+
+.tasks__task-container {
+  display: flex;
+  justify-content: space-between;
 }

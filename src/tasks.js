@@ -33,6 +33,7 @@ function createForm(eventCallback) {
 function createTask(task) {
   let inputValue = task.description
   let newNode = document.importNode(taskTemplate.content, true)
+  newNode.querySelector('.tasks__task-container').setAttribute('data-task-id', task.id)
   newNode.querySelector(".tasks__task-description").textContent = inputValue
   allTasksNodes.push(newNode)
 }

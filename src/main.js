@@ -34,7 +34,7 @@ app.on('activate', function () {
 })
 
 ipcMain.on('startDBLoad', _=> {
-  mainWindow.webContents.send('loadDB', db.data)
+  mainWindow.webContents.send('loadDB', db.loadData())
 })
 
 ipcMain.on('insertIntoDB', (evt, data)=> {

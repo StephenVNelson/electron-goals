@@ -46,6 +46,15 @@ ipcMain.on('insertIntoDB', (evt, data)=> {
   });
 })
 
+ipcMain.on('deleteFromDB', (evt, taskID, taskSortNumber)=>{
+  db.deleteTask(taskID, taskSortNumber,  err =>{
+    if (err) {throw err}
+    else {
+      mainWindow.webContents.send('loadDB', db.loadData())
+    }
+  })
+})
+
 
 
 // In this file you can include the rest of your app's specific main process

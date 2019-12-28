@@ -1,8 +1,19 @@
 const fs = require('fs')
 
+
+
 function loadData() {
   rawData = fs.readFileSync('db/db.json')
   data = JSON.parse(rawData)
+  sortedData = reSort(data)
+  return sortedData
+}
+
+function reSort(data) {
+  for (let i = 0; i < data.tasks.length; i++) {
+    data.tasks[i].sort = i + 1
+  }
+  fs.writeFileSync('db/db.json', JSON.stringify(data, null, 2))
   return data
 }
 

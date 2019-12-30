@@ -1,12 +1,19 @@
 const electron = require('electron')
 const ipc = electron.ipcRenderer
 
+// Array for building tasks nodes temporarily in memory
 let allTasksNodes = []
+
+// Important Nodes
 const allTasks = document.querySelector(".tasks")
 const addButton = allTasks.querySelector(".tasks__add-button button")
 const taskList = allTasks.querySelector(".tasks__list")
-const taskFormTemplate = allTasks.querySelector('template.tasks__task-form-template')
-const taskTemplate = allTasks.querySelector('template.tasks__task-template')
+
+//HTML Templates
+const taskFormTemplate = allTasks
+  .querySelector('template.tasks__task-form-template')
+const taskTemplate = allTasks
+  .querySelector('template.tasks__task-template')
 
 
 function gatherTaskData(event) {
@@ -17,9 +24,7 @@ function gatherTaskData(event) {
   return {id, sort, description}
 }
 
-// I am confused about how to imbed the task information in create Form
-// sometimes I don't need an ID or anything because its a new form, but when there is an ID i need to put that information in the form
-// do I do that with an optional argument?
+
 function createForm(taskData = null, eventCallback) {
   let newNode = document.importNode(taskFormTemplate.content, true)
   if (taskData != null) {
@@ -37,19 +42,22 @@ function createForm(taskData = null, eventCallback) {
   };
   return newNode
 }
-// have create form just retun a form and then you can put it wherever you want
 
 function createTask(task) {
   let newNode = document.importNode(taskTemplate.content, true)
   let taskContainer = newNode.querySelector('.tasks__task-container')
   taskContainer.setAttribute('data-task-id', task.id)
   taskContainer.setAttribute('data-sort', task.sort)
+
+  // Delete Task Event Listener
   newNode.querySelector('.tasks__delete').addEventListener('click', e => {
     let taskContainer = event.target.parentElement.parentElement
     let id = taskContainer.dataset.taskId
     let sort = taskContainer.dataset.sort
     ipc.send('deleteFromDB', id, sort)
   })
+
+  // Edit Task Event Listener
   newNode.querySelector('.tasks__edit').addEventListener('click', e => {
     let taskContainer = event.target.parentElement.parentElement
     let id = taskContainer.dataset.taskId
@@ -62,6 +70,8 @@ function createTask(task) {
     })
     taskContainer.parentElement.replaceWith(newForm)
   })
+
+
   newNode.querySelector(".tasks__task-description").textContent = task.description
   allTasksNodes.push(newNode)
 }

@@ -31,9 +31,11 @@
             </li>
           </template>
 
-          <!-- Template for create task -->
-          <template class="tasks__new-task-template">
+          <!-- Template for Task Form -->
+          <template class="tasks__task-form-template">
             <li>
+              <input type="hidden" name="id">
+              <input type="hidden" name="sort">
               <input type="text" name="description">
               <button>submit</button>
             </li>
@@ -46,7 +48,7 @@
           <li class="tasks__add-button" ><button>+</button></li>
 
         </ol>
-        
+
       </div>
 
     </div>

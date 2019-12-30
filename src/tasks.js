@@ -5,20 +5,28 @@ let allTasksNodes = []
 const allTasks = document.querySelector(".tasks")
 const addButton = allTasks.querySelector(".tasks__add-button button")
 const taskList = allTasks.querySelector(".tasks__list")
-const newTaskTemplate = allTasks.querySelector('template.tasks__new-task-template')
+const taskFormTemplate = allTasks.querySelector('template.tasks__task-form-template')
 const taskTemplate = allTasks.querySelector('template.tasks__task-template')
 
 
 function gatherTaskData(event) {
   let form = event.target.parentElement
+  let id = form.querySelector("input[name=id]").value
+  let sort = form.querySelector("input[name=sort]").value
   let description = form.querySelector("input[name=description]").value
-  return {
-    description: description
-  }
+  return {id, sort, description}
 }
 
-function createForm(eventCallback) {
-  let newNode = document.importNode(newTaskTemplate.content, true)
+// I am confused about how to imbed the task information in create Form
+// sometimes I don't need an ID or anything because its a new form, but when there is an ID i need to put that information in the form
+// do I do that with an optional argument?
+function createForm(taskData = null, eventCallback) {
+  let newNode = document.importNode(taskFormTemplate.content, true)
+  if (taskData != null) {
+    for (let attr in taskData) {
+      newNode.querySelector(`input[name=${attr}]`).value = taskData[attr]
+    }
+  }
   let newNodeSubmitButton = newNode.querySelector('button')
   let newNodeTextInput = newNode.querySelector('input[name=description]')
   newNodeSubmitButton.addEventListener('click', eventCallback)
@@ -27,8 +35,9 @@ function createForm(eventCallback) {
      eventCallback()
    }
   };
-  taskList.appendChild(newNode)
+  return newNode
 }
+// have create form just retun a form and then you can put it wherever you want
 
 function createTask(task) {
   let newNode = document.importNode(taskTemplate.content, true)
@@ -40,6 +49,18 @@ function createTask(task) {
     let id = taskContainer.dataset.taskId
     let sort = taskContainer.dataset.sort
     ipc.send('deleteFromDB', id, sort)
+  })
+  newNode.querySelector('.tasks__edit').addEventListener('click', e => {
+    let taskContainer = event.target.parentElement.parentElement
+    let id = taskContainer.dataset.taskId
+    let sort = taskContainer.dataset.sort
+    let description = taskContainer.querySelector('.tasks__task-description').textContent
+    let taskData = {id, sort, description}
+    let newForm = createForm(taskData , _=>{
+      let data = gatherTaskData(event)
+      ipc.send('editTask', data)
+    })
+    taskContainer.parentElement.replaceWith(newForm)
   })
   newNode.querySelector(".tasks__task-description").textContent = task.description
   allTasksNodes.push(newNode)

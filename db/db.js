@@ -31,6 +31,25 @@ function createTask(task, callback) {
   fs.writeFile('db/db.json', newData, callback);
 }
 
+// Edit
+function editTask(taskData, callback) {
+  let data = loadData()
+  if (data.tasks[taskData.sort - 1].id == taskData.id) {
+    let task = data.tasks[taskData.sort - 1]
+    for (attr in task) {
+      task[attr] = taskData[attr]
+    }
+  } else {
+    let taskIndex = data.tasks.indexOf(data.tasks.find(task => task.id == taskData.id))
+    let task = data.tasks[taskIndex]
+    for (attr in task) {
+      task[attr] = taskData[attr]
+    }
+  }
+  let newData = JSON.stringify(data, null, 2)
+  fs.writeFile('db/db.json', newData, callback);
+}
+
 // Delete
 function deleteTask(taskID, taskSortNumber, callback) {
   let data = loadData()
@@ -44,4 +63,4 @@ function deleteTask(taskID, taskSortNumber, callback) {
   fs.writeFile('db/db.json', newData, callback);
 }
 
-module.exports = {createTask, loadData, deleteTask}
+module.exports = {createTask, loadData, deleteTask, editTask}

@@ -11,9 +11,10 @@ ipc.on('loadDB', (ext, data)=>{
 })
 
 
-tasks.addButton.addEventListener('click', _=> {
-  tasks.createForm(_=> {
+tasks.addButton.addEventListener('click', e => {
+  let newForm = tasks.createForm(null, _=> {
     let data = tasks.gatherTaskData(event)
     ipc.send('insertIntoDB', data)
   })
+  e.target.parentElement.insertBefore(newForm, e.target)
 })

@@ -4,7 +4,9 @@
   "description": "A minimal Electron application",
   "main": "src/main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "test": "mocha",
+    "test-debugger": "mocha --inpsect-brk ./test/spec.js"
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
@@ -17,6 +19,8 @@
   "author": "GitHub",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^7.1.7"
+    "electron": "^7.1.7",
+    "mocha": "^6.2.2",
+    "spectron": "^9.0.0"
   }
 }

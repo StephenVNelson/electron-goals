@@ -9,6 +9,10 @@ function loadData() {
   return sortedData
 }
 
+const tasks = {
+  count: loadData().tasks.length
+}
+
 function reSort(data) {
   for (let i = 0; i < data.tasks.length; i++) {
     data.tasks[i].sort = i + 1
@@ -63,4 +67,4 @@ function deleteTask(taskID, taskSortNumber, callback) {
   fs.writeFile('db/db.json', newData, callback);
 }
 
-module.exports = {createTask, loadData, deleteTask, editTask}
+module.exports = {createTask, loadData, deleteTask, editTask, tasks}

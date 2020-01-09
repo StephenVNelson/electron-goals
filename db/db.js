@@ -14,14 +14,12 @@ function Database(type="db") {
         return 'db/testDB.json'
       }
     },
-    get dbData() {
-      return this.loadData()
-    },
+    get dbData() {return this.loadData()},
     get all() {
       if (this.type === "db") {
         return this.loadData()
       }
-      else { return this.loadData()[this.type]}
+      else { return this.loadData()[this.type].instances}
     },
 
     /* METHODS */

@@ -1,21 +1,24 @@
 {
   "lastUpdated": "now",
   "name": "Test",
-  "tasks": [
-    {
-      "description": "Test Task 1",
-      "id": "K4OT8F79AET4F",
-      "sort": 1
-    },
-    {
-      "description": "Test Task 2",
-      "id": "K4P8P9977UVI0",
-      "sort": 2
-    },
-    {
-      "description": "Test Task 3",
-      "id": "K4QM5M1PJI92M",
-      "sort": 3
-    }
-  ]
+  "tasks": {
+    "updated": "now",
+    "instances": [
+      {
+        "description": "Test Task 1",
+        "id": "K4OT8F79AET4F",
+        "sort": 1
+      },
+      {
+        "description": "Test Task 2",
+        "id": "K4P8P9977UVI0",
+        "sort": 2
+      },
+      {
+        "description": "Test Task 3",
+        "id": "K4QM5M1PJI92M",
+        "sort": 3
+      }
+    ]
+  }
 }

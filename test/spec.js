@@ -4,14 +4,14 @@ const electronPath = require('electron') // Require Electron from the binaries i
 
 const {Task} = require('../db/task.js')
 Task.test = true // this must be true in order to use the test database
-const {fs, promises} = require('fs')
+const fs = require('fs')
+const {promises} = fs
 const path = require('path')
-const db = require('../db/db.js')
+const {DB} = require('../db/db.js')
 
 
 describe('Working off of testDB', function(){
-
-  beforeEach(async function(){
+  async function resetToBoilerPlate(){
     const testDBBP = await promises.readFile('db/testDBBoilerplate.json', 'utf8')
     const testDB = await promises.readFile('db/testDB.json', 'utf8')
     var editTestDBBP = JSON.parse(testDBBP)
@@ -22,7 +22,9 @@ describe('Working off of testDB', function(){
     }
     var changedTestDB = JSON.stringify(editTestDB, null, 2).concat('\n')
     await promises.writeFile('db/testDB.json', changedTestDB)
-  })
+  }
+  beforeEach(resetToBoilerPlate)
+  afterEach(resetToBoilerPlate)
 
   it('has #db name attribute', function(){
     assert.notEqual(Task.dbFileName, undefined)
@@ -32,7 +34,7 @@ describe('Working off of testDB', function(){
     assert.equal(Task.test, true)
   })
 
-  it('Returns the test database for #db', function(){
+  it('Returns the test database name for #dbFileName', function(){
     assert.equal(Task.dbFileName, 'db/testDB.json')
   })
 
@@ -49,9 +51,28 @@ describe('Working off of testDB', function(){
     }
   })
 
+  it('Asynchronously returns the #loadData', async function(){
+    const asyncDB = await Task.loadData()
+    var stringed = JSON.stringify(asyncDB)
+    const syncDB = JSON.stringify(JSON.parse(fs.readFileSync(Task.dbFileName)))
+    assert.equal(stringed, syncDB)
+  })
+
+  it('Asynchronously returns #all', async function(){
+    const all = await Task.all
+    var stringed = JSON.stringify(all)
+    var allSync = JSON.stringify(
+      JSON.parse(
+        fs.readFileSync(Task.dbFileName)
+      )[Task.type].instances
+    )
+    assert.equal(stringed, allSync)
+  })
+
   describe('Task DB', function(){
-    it('returns #all of the tasks in the boilerplate', function(){
-      assert.equal(Task.all.length, 3)
+    it('returns #all of the tasks in the boilerplate', async function(){
+      let tasks = await Task.all
+      assert.equal( tasks.length, 3)
     })
     it('returns the test db filesname', function(){
       assert.equal(Task.dbFileName, 'db/testDB.json')
@@ -61,26 +82,38 @@ describe('Working off of testDB', function(){
       assert.equal(Task.dbFileName, 'db/mainDB.json')
       Task.test = true
     })
-    it('only returns the tasks on #all', function(){
-      assert.strictEqual(Array.isArray(Task.all), true);
+    it('only returns the tasks on #all', async function(){
+      let tasks = await Task.all
+      assert.strictEqual(Array.isArray(tasks), true);
       ['description', 'id', 'sort'].forEach( propertyName => {
         assert.strictEqual(
-          Object.getOwnPropertyNames(Task.all[0]).includes(propertyName), true
+          Object.getOwnPropertyNames(tasks[0]).includes(propertyName), true
         )
       })
-      assert.equal(Task.all.length, 3)
+      assert.equal(tasks.length, 3)
     })
-    it('returns the whole db on #dbData', function(){
-      assert.strictEqual(Array.isArray(Task.dbData), false);
+    it('returns the whole db on #dbData', async function(){
+      let db = await Task.dbData
+      assert.strictEqual(Array.isArray(db), false);
       ['lastUpdated', 'name', 'tasks'].forEach( propertyName => {
         assert.strictEqual(
-          Object.getOwnPropertyNames(Task.dbData).includes(propertyName), true
+          Object.getOwnPropertyNames(db).includes(propertyName), true
         )
       })
     })
+    it('generates a unique id')
   })
 
-  describe('Task CRUD', function(){
+  describe('Task #create', function(){
+    it('#create task', async function(){
+      await Task.create({description: "I am a new task"})
+      // assert.equal(Task.latest.description, "I am a new task")
+      let tasks = await Task.all
+      assert.equal(tasks.length, 4)
+    })
+    it('does not not save tasks without required attributes')
+    it('has unique sort')
+    it('follows id perameters')
   })
 })
 

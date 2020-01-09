@@ -3,7 +3,7 @@ const assert = require('assert')
 const electronPath = require('electron') // Require Electron from the binaries included in node_modules.
 
 const {Task} = require('../db/task.js')
-Task.test = true
+Task.test = true // this must be true in order to use the test database
 const {fs, promises} = require('fs')
 const path = require('path')
 const db = require('../db/db.js')
@@ -49,10 +49,38 @@ describe('Working off of testDB', function(){
     }
   })
 
-  describe('Task CRUD', function(){
+  describe('Task DB', function(){
     it('returns #all of the tasks in the boilerplate', function(){
       assert.equal(Task.all.length, 3)
     })
+    it('returns the test db filesname', function(){
+      assert.equal(Task.dbFileName, 'db/testDB.json')
+    })
+    it('returns the main db filename when test is false', function(){
+      Task.test = false
+      assert.equal(Task.dbFileName, 'db/mainDB.json')
+      Task.test = true
+    })
+    it('only returns the tasks on #all', function(){
+      assert.strictEqual(Array.isArray(Task.all), true);
+      ['description', 'id', 'sort'].forEach( propertyName => {
+        assert.strictEqual(
+          Object.getOwnPropertyNames(Task.all[0]).includes(propertyName), true
+        )
+      })
+      assert.equal(Task.all.length, 3)
+    })
+    it('returns the whole db on #dbData', function(){
+      assert.strictEqual(Array.isArray(Task.dbData), false);
+      ['lastUpdated', 'name', 'tasks'].forEach( propertyName => {
+        assert.strictEqual(
+          Object.getOwnPropertyNames(Task.dbData).includes(propertyName), true
+        )
+      })
+    })
+  })
+
+  describe('Task CRUD', function(){
   })
 })
 

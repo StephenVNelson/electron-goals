@@ -69,7 +69,7 @@ describe('Working off of testDB', function(){
     assert.equal(stringed, allSync)
   })
 
-  describe('Task DB', function(){
+  describe('Task DB/Queries', function(){
     it('returns #all of the tasks in the boilerplate', async function(){
       let tasks = await Task.all
       assert.equal( tasks.length, 3)
@@ -101,7 +101,12 @@ describe('Working off of testDB', function(){
         )
       })
     })
-    it('generates a unique id')
+    it('generates a unique id', function(){
+      let id1 = Task.newID
+      let id2 = Task.newID
+      assert.equal(id1.length, 13)
+      assert.notEqual(id1, id2)
+    })
   })
 
   describe('Task #create', function(){

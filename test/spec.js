@@ -116,7 +116,16 @@ describe('Working off of testDB', function(){
       let nextLatestTask = await Task.latest
       assert.equal(nextLatestTask.description, "I am a new task")
     })
-    it('Queries the DB with #where')
+    describe('Queries the DB with #where', function(){
+      it('returns instance #where criteria if there is only 1 match', async function(){
+        let all_tasks = await Task.all
+        let random_task = all_tasks[Math.floor(Math.random() * all_tasks.length)];
+        let queried_task = await Task.where({id: random_task.id})
+        assert.equal(random_task.id, queried_task.id)
+      })
+      it('returns an error if the user gives a non-eistant perameter')
+      it('returns an array of all instances #where criteria if there are more than 1 matches')
+    })
   })
   })
 

@@ -52,6 +52,12 @@ function Database(type="db") {
         this.dbFileName,
         JSON.stringify(allData, null, 2).concat('\n')
       )
+    },
+    async where(perameters) {
+      let allInstances = await this.all
+      let mathingInstance = allInstances
+        .find(instance=> instance.id == perameters.id)
+      return mathingInstance
     }
   }
 }

@@ -107,14 +107,26 @@ describe('Working off of testDB', function(){
       assert.equal(id1.length, 13)
       assert.notEqual(id1, id2)
     })
+    it('returns the #latest created task', async function(){
+      let latestTask = await Task.latest
+      assert.equal(latestTask.sort, 3)
+      assert.equal(latestTask.description, "Test Task 3")
+      await Task.create({description: "I am a new task"})
+      let themAll = await Task.all
+      let nextLatestTask = await Task.latest
+      assert.equal(nextLatestTask.description, "I am a new task")
+    })
+    it('Queries the DB with #where')
+  })
   })
 
   describe('Task #create', function(){
     it('#create task', async function(){
       await Task.create({description: "I am a new task"})
-      // assert.equal(Task.latest.description, "I am a new task")
       let tasks = await Task.all
       assert.equal(tasks.length, 4)
+      let lastTask = await Task.latest
+      assert.equal(lastTask.description, "I am a new task")
     })
     it('does not not save tasks without required attributes')
     it('has unique sort')

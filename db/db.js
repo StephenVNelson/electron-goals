@@ -29,6 +29,16 @@ function Database(type="db") {
     get newID() {
       return (Date.now().toString(36) + Math.random().toString(36).substr(2, 5)).toUpperCase()
     },
+    get latest() {
+      return (async _=>{
+        let tasks = await this.all
+        let lastTask = tasks
+          .sort(
+            (a,b)=> a.createdAt - b.createdAt
+          )[tasks.length -1]
+        return lastTask
+      })()
+    },
 
     /* METHODS */
     async loadData() {

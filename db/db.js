@@ -53,11 +53,24 @@ function Database(type="db") {
         JSON.stringify(allData, null, 2).concat('\n')
       )
     },
-    async where(perameters) {
+    /* receives an object of attribute:value and returns
+    an instance(object)/instances(array of objets)
+    that match the attributes:values */
+    async where(properties) {
+      // Error handling
+      Object.keys(properties).forEach((property) => {
+        if (!this.ATTRIBUTES.includes(property)) {
+          throw new Error(`${property} is not a valid property`);
+        }
+      })
+
       let allInstances = await this.all
-      let mathingInstance = allInstances
-        .find(instance=> instance.id == perameters.id)
-      return mathingInstance
+      Object.keys(properties).forEach((perameter) =>{
+        allInstances = allInstances.filter((instance) => {
+          return instance[perameter] == properties[perameter]
+        })
+      })
+      return allInstances.length == 1 ? allInstances[0] : allInstances
     }
   }
 }

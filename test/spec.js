@@ -118,15 +118,54 @@ describe('Working off of testDB', function(){
     })
     describe('Queries the DB with #where', function(){
       it('returns instance #where criteria if there is only 1 match', async function(){
-        let all_tasks = await Task.all
-        let random_task = all_tasks[Math.floor(Math.random() * all_tasks.length)];
-        let queried_task = await Task.where({id: random_task.id})
-        assert.equal(random_task.id, queried_task.id)
+        let allTasks = await Task.all
+        let randomTask = allTasks[Math.floor(Math.random() * allTasks.length)];
+        let taskById = await Task.where({id: randomTask.id})
+        let taskBySort = await Task.where({sort: randomTask.sort})
+        let taskByDescription = await Task.where(
+          {description: randomTask.description}
+        )
+        let taskByDescriptionSort = await Task.where(
+          {description: randomTask.description, sort: randomTask.sort}
+        )
+        let taskByDescriptionSortID = await Task.where(
+          {
+            description: randomTask.description,
+            sort: randomTask.sort,
+            id: randomTask.id
+          }
+        )
+        assert.equal(Array.isArray(taskById), false)
+        assert.equal(JSON.stringify(randomTask), JSON.stringify(taskById))
+        assert.equal(
+          JSON.stringify(randomTask), JSON.stringify(taskByDescriptionSort)
+        )
+        assert.equal(
+          JSON.stringify(randomTask), JSON.stringify(taskByDescriptionSortID)
+        )
       })
-      it('returns an error if the user gives a non-eistant perameter')
-      it('returns an array of all instances #where criteria if there are more than 1 matches')
+      it('returns an error if the user gives a non-eistant perameter', async function(){
+        try {
+          await Task.where({discription: "Hello"})
+        } catch(e) {
+          assert.equal(e.message, "discription is not a valid property")
+        }
+
+      })
+      it('returns an array of all instances #where criteria if there are more than 1 matches', async function(){
+        await Task.create({description: "I am not unique"})
+        await Task.create({description: "I am not unique"})
+        let twoTasks = await Task.where({description: "I am not unique"})
+        assert.equal(twoTasks.length, 2)
+        assert.equal(twoTasks[0].description, "I am not unique")
+        assert.equal(twoTasks[1].description, "I am not unique")
+      })
     })
   })
+
+  describe('Task Validations', function(){
+    it('Validates presence of required properties')
+    it('Validates uniqueness of IDs and Sort')
   })
 
   describe('Task #create', function(){
@@ -137,9 +176,6 @@ describe('Working off of testDB', function(){
       let lastTask = await Task.latest
       assert.equal(lastTask.description, "I am a new task")
     })
-    it('does not not save tasks without required attributes')
-    it('has unique sort')
-    it('follows id perameters')
   })
 })
 

@@ -176,6 +176,10 @@ describe('Working off of testDB', function(){
       let lastTask = await Task.latest
       assert.equal(lastTask.description, "I am a new task")
     })
+    it("returns the new created task after it's inserted into the db", async function(){
+      let newTask = await Task.create({description: "I am returned after inserted"})
+      assert.equal(newTask.description, "I am returned after inserted")
+    })
   })
 })
 

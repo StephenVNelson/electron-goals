@@ -26,7 +26,7 @@ describe('Working off of testDB', function(){
   beforeEach(resetToBoilerPlate)
   afterEach(resetToBoilerPlate)
 
-  it('has #db name attribute', function(){
+  it('has #dbFileName attribute', function(){
     assert.notEqual(Task.dbFileName, undefined)
   })
 
@@ -60,11 +60,10 @@ describe('Working off of testDB', function(){
 
   it('Asynchronously returns #all', async function(){
     const all = await Task.all
-    var stringed = JSON.stringify(all)
-    var allSync = JSON.stringify(
-      JSON.parse(
-        fs.readFileSync(Task.dbFileName)
-      )[Task.type].instances
+    let stringed = JSON.stringify(all)
+    let rawData = fs.readFileSync(Task.dbFileName)
+    let allSync = JSON.stringify(
+      JSON.parse(rawData)[Task.type].instances
     )
     assert.equal(stringed, allSync)
   })
@@ -102,10 +101,11 @@ describe('Working off of testDB', function(){
       })
     })
     it('generates a unique id', function(){
-      let id1 = Task.newID
-      let id2 = Task.newID
-      assert.equal(id1.length, 13)
-      assert.notEqual(id1, id2)
+      let task1 = Object.create(Task)
+      let task2 = Object.create(Task)
+      task1.setID()
+      assert.equal(task1.id.length, 13)
+      assert.notEqual(task1.id, task2.id)
     })
     it('returns the #latest created task', async function(){
       let latestTask = await Task.latest
@@ -116,6 +116,7 @@ describe('Working off of testDB', function(){
       let nextLatestTask = await Task.latest
       assert.equal(nextLatestTask.description, "I am a new task")
     })
+
     describe('Queries the DB with #where', function(){
       it('returns instance #where criteria if there is only 1 match', async function(){
         let allTasks = await Task.all
@@ -163,8 +164,12 @@ describe('Working off of testDB', function(){
     })
   })
 
-  describe('Task Validations', function(){
-    it('Validates presence of required properties')
+  describe('Task #validations', function(){
+    it('Validates presence of required properties', async function(){
+      await assert.rejects(async ()=> await Task.create({description: ""}),{
+        message: 'description must contain a value'
+      })
+  })
     it('Validates uniqueness of IDs and Sort')
   })
 

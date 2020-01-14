@@ -1,10 +1,14 @@
-const {Database, DB} = require('./db.js')
-const Task = Object.create(Database('tasks'))
+const {Instance} = require('./instance.js')
+const Task = Object.create(Instance)
 
-Task.ATTRIBUTES = ['id', 'sort', 'description']
+Task.type = 'tasks'
+
+Task.VALID_ATTRIBUTES = ['id', 'sort', 'description']
+
 Task.create = async function(task) {
+  this.validates(task)
   let allTasks = await Task.all
-  task.id = Task.newID
+  task.id = this.setID()
   task.sort = allTasks.length + 1
   task.createdAt = new Date()
   task.updatedAt = new Date()

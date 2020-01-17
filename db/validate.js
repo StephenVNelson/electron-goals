@@ -24,4 +24,15 @@ Validate.validates = function(object){
   })
 }
 
+Validate.attrByProperty = function(attribute, boolean){
+  let filteredAttrs = []
+  let allAttrs = this.ATTRIBUTES
+  for (let k in allAttrs) {
+    if (allAttrs[k][attribute] === boolean) {
+      filteredAttrs.push(allAttrs[k][attribute])
+    }
+  }
+  return filteredAttrs
+}
+
 module.exports = {Validate}

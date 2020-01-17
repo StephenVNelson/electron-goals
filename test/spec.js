@@ -116,7 +116,6 @@ describe('Working off of testDB', function(){
       let nextLatestTask = await Task.latest
       assert.equal(nextLatestTask.description, "I am a new task")
     })
-
     describe('Queries the DB with #where', function(){
       it('returns instance #where criteria if there is only 1 match', async function(){
         let allTasks = await Task.all
@@ -169,7 +168,13 @@ describe('Working off of testDB', function(){
       await assert.rejects(async ()=> await Task.create({description: ""}),{
         message: 'description must contain a value'
       })
-  })
+    })
+    it('returns #attrsByProperty', function(){
+      let hasPresence = Task.attrByProperty('presence', true)
+      let hasUpdate = Task.attrByProperty('update', true)
+      assert.equal(hasPresence.length, 3)
+      assert.equal(hasUpdate.length, 2)
+    })
     it('Validates uniqueness of IDs and Sort')
   })
 

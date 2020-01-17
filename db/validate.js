@@ -29,7 +29,7 @@ Validate.attrByProperty = function(attribute, boolean){
   let allAttrs = this.ATTRIBUTES
   for (let k in allAttrs) {
     if (allAttrs[k][attribute] === boolean) {
-      filteredAttrs.push(allAttrs[k][attribute])
+      filteredAttrs.push(k)
     }
   }
   return filteredAttrs

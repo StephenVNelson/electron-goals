@@ -15,6 +15,14 @@ Task.ATTRIBUTES = {
   description: {
     presence: true,
     update: true
+  },
+  createdAt: {
+    presence: false,
+    update: false
+  },
+  updatedAt: {
+    presence: false,
+    update: false
   }
 }
 

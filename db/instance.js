@@ -16,17 +16,17 @@ Object.defineProperty(Instance, 'all', {
   }
 })
 
-Instance.orderBy = async function(property) {
-  let instances = await this.all
-  return instances.sort((a,b) => a[property] - b[property])
-}
-
 Object.defineProperty(Instance, 'latest', {
   async get() {
     let sortedProperties = await this.orderBy('createdAt')
     return sortedProperties[sortedProperties.length - 1]
   }
 })
+
+Instance.orderBy = async function(property) {
+  let instances = await this.all
+  return instances.sort((a,b) => a[property] - b[property])
+}
 
 /* receives an object of attribute:value and returns
 an instance(object)/instances(array of objets)

@@ -3,7 +3,20 @@ const Task = Object.create(Instance)
 
 Task.type = 'tasks'
 
-Task.VALID_ATTRIBUTES = ['id', 'sort', 'description']
+Task.ATTRIBUTES = {
+  id: {
+    presence: true,
+    update: false
+  },
+  sort: {
+    presence: true,
+    update: true,
+  },
+  description: {
+    presence: true,
+    update: true
+  }
+}
 
 Task.create = async function(task) {
   this.validates(task)

@@ -32,12 +32,6 @@ Object.defineProperty(Instance, 'latest', {
 an instance(object)/instances(array of objets)
 that match the attributes:values */
 Instance.where = async function(properties) {
-  // Error handling
-  // Object.keys(properties).forEach((property) => {
-  //   if (!this.VALID_ATTRIBUTES.includes(property)) {
-  //     throw new Error(`${property} is not a valid property`);
-  //   }
-  // })
   this.validates(properties)
 
   let allInstances = await this.all

@@ -10,19 +10,19 @@ const path = require('path')
 const {DB} = require('../db/db.js')
 
 
-describe('Working off of testDB', function(){
-  async function resetToBoilerPlate(){
-    const testDBBP = await promises.readFile('db/testDBBoilerplate.json', 'utf8')
-    const testDB = await promises.readFile('db/testDB.json', 'utf8')
-    var editTestDBBP = JSON.parse(testDBBP)
-    var editTestDB = JSON.parse(testDB)
-    for (let key in editTestDB) {
-      if (key === 'name') {continue;}
-      else {editTestDB[key] = editTestDBBP[key]}
-    }
-    var changedTestDB = JSON.stringify(editTestDB, null, 2).concat('\n')
-    await promises.writeFile('db/testDB.json', changedTestDB)
+async function resetToBoilerPlate(){
+  const testDBBP = await promises.readFile('db/testDBBoilerplate.json', 'utf8')
+  const testDB = await promises.readFile('db/testDB.json', 'utf8')
+  var editTestDBBP = JSON.parse(testDBBP)
+  var editTestDB = JSON.parse(testDB)
+  for (let key in editTestDB) {
+    if (key === 'name') {continue;}
+    else {editTestDB[key] = editTestDBBP[key]}
   }
+  var changedTestDB = JSON.stringify(editTestDB, null, 2).concat('\n')
+  await promises.writeFile('db/testDB.json', changedTestDB)
+}
+describe('Working off of testDB', function(){
   beforeEach(resetToBoilerPlate)
   afterEach(resetToBoilerPlate)
 

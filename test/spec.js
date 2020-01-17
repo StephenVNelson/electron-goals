@@ -191,6 +191,21 @@ describe('Working off of testDB', function(){
       assert.equal(newTask.description, "I am returned after inserted")
     })
   })
+
+  describe('Task #edit', function(){
+    it('#updates a task with valid attributes', async function(){
+      let latestTask = await Task.latest
+      let newTask = {
+        id: latestTask.id,
+        sort: latestTask.sort,
+        description: "This task has been edited"
+      }
+      await Task.update(newTask)
+      let updatedTask = await Task.latest
+      assert.equal(updatedTask.description, "This task has been edited")
+    })
+    it('does not #updates a task with invalid attributes')
+  })
 })
 
 // describe('Application launch', function () {

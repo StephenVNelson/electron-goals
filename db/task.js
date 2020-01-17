@@ -54,4 +54,13 @@ Task.update = async function(task) {
   return await Task.where({id: taskToUpdate.id})
 }
 
+Task.delete = async function(task) {
+  this.validates(task)
+  let allTasks = await Task.all
+  let indexForTaskToDelete = allTasks.findIndex((qTask) => qTask.id === task.id)
+  let taskToDelete = allTasks.splice(indexForTaskToDelete, 1)
+  await Task.updateWith(allTasks)
+  return taskToDelete
+}
+
 module.exports = {Task}

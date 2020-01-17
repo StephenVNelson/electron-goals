@@ -206,6 +206,21 @@ describe('Working off of testDB', function(){
     })
     it('does not #updates a task with invalid attributes')
   })
+
+  describe('Task #delete', function(){
+    it('#deletes a task with valid attributes', async function(){
+      let allTasks = await Task.all
+      assert.equal(allTasks.length, 3)
+      let taskToDelete = allTasks[0]
+      await Task.delete({id: taskToDelete.id})
+      let newTasks = await Task.all
+      assert.equal(newTasks.length, 2)
+    })
+  })
+
+  describe('Task #delete', function(){
+
+  })
 })
 
 // describe('Application launch', function () {

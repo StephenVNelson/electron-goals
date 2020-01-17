@@ -180,7 +180,7 @@ describe('Working off of testDB', function(){
 
   describe('Task #create', function(){
     it('#create task', async function(){
-      await Task.create({description: "I am a new task"})
+      let newTask = await Task.create({id: "", sort: "", description: "I am a new task"})
       let tasks = await Task.all
       assert.equal(tasks.length, 4)
       let lastTask = await Task.latest

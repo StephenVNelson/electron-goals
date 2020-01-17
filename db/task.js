@@ -6,33 +6,38 @@ Task.type = 'tasks'
 Task.ATTRIBUTES = {
   id: {
     presence: true,
+    create: false,
     update: false
   },
   sort: {
     presence: true,
+    create: false,
     update: true,
   },
   description: {
     presence: true,
+    create: true,
     update: true
   },
   createdAt: {
     presence: false,
+    create: false,
     update: false
   },
   updatedAt: {
     presence: false,
+    create: false,
     update: false
   }
 }
 
 Task.create = async function(task) {
-  this.validates(task)
   let allTasks = await Task.all
   task.id = this.setID()
   task.sort = allTasks.length + 1
   task.createdAt = new Date()
   task.updatedAt = new Date()
+  this.validates(task)
   allTasks.push(task)
   await Task.updateWith(allTasks)
   returnedTask = await Task.where({id: task.id})

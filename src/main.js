@@ -47,8 +47,16 @@ ipcMain.on('startDBLoad', async _=> {
 })
 
 ipcMain.on('insertIntoDB', async (evt, data)=> {
-  await Task.create(data);
-  updateTasks()
+  try{
+    await Task.create(data);
+    updateTasks()
+  }
+  catch(err) {
+    mainWindow.webContents.send('postError', {
+      message: err.message,
+      stack: err.stack
+    })
+  }
 })
 
 ipcMain.on('deleteFromDB', async (evt, data)=>{

@@ -18,3 +18,7 @@ tasks.addButton.addEventListener('click', e => {
   })
   e.target.parentElement.insertBefore(newForm, e.target)
 })
+
+ipc.on('postError', (ext, err)=>{
+  tasks.postError(err.message)
+})

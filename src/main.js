@@ -1,10 +1,14 @@
 // Modules to control application life and create native browser window
 const {app, BrowserWindow, ipcMain} = require('electron')
 const path = require('path')
-const db = require('../db/db.js')
+const {Database} = require('../db/db.js')
+const {Task} = require('../db/task.js')
 
 let mainWindow
 
+if(process.env.NODE_ENV === 'test'){
+    Task.test = true
+}
 function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({

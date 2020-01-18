@@ -7,48 +7,56 @@
   </head>
   <body>
     <div class="container">
-      <!-- Goals -->
+      <!-- Side Nav -->
       <div class="sidenav">
         <ol class="sidenav__goals">
           <li>This is my first goal.</li>
         </ol>
       </div>
 
-      <!-- Tasks -->
-      <div class="tasks">
-        <ol>
+      <!-- Main Window -->
+      <div class="main-window">
+        <!-- Errors -->
+        <template class="errors">
+          <p class="error__message">
+          </p>
+        </template>
+        <!-- Tasks -->
+        <div class="tasks">
+          <ol>
 
-          <!-- Task Template -->
-          <template class="tasks__task-template">
-            <li>
-              <div class="tasks__task-container">
-                <div class="tasks__task-description"></div>
-                <div class="tasks__task-options">
-                  <span class="tasks__edit">O</span>
-                  <span class="tasks__delete">X</span>
+            <!-- Task Template -->
+            <template class="tasks__task-template">
+              <li>
+                <div class="tasks__task-container">
+                  <div class="tasks__task-description"></div>
+                  <div class="tasks__task-options">
+                    <span class="tasks__edit">O</span>
+                    <span class="tasks__delete">X</span>
+                  </div>
                 </div>
-              </div>
-            </li>
-          </template>
+              </li>
+            </template>
 
-          <!-- Task Form Template -->
-          <template class="tasks__task-form-template">
-            <li>
-              <input type="hidden" name="id">
-              <input type="hidden" name="sort">
-              <input type="text" name="description">
-              <button>submit</button>
-            </li>
-          </template>
+            <!-- Task Form Template -->
+            <template class="tasks__task-form-template">
+              <li>
+                <input type="hidden" name="id">
+                <input type="hidden" name="sort">
+                <input type="text" name="description">
+                <button>submit</button>
+              </li>
+            </template>
 
-          <!-- div that stores all the tasks -->
-          <div class="tasks__list">
-          </div>
+            <!-- div that stores all the tasks -->
+            <div class="tasks__list">
+            </div>
 
-          <li class="tasks__add-button" ><button>+</button></li>
+            <li class="tasks__add-button" ><button>+</button></li>
 
-        </ol>
+          </ol>
 
+        </div>
       </div>
 
     </div>

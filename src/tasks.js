@@ -14,6 +14,7 @@ const taskFormTemplate = allTasks
   .querySelector('template.tasks__task-form-template')
 const taskTemplate = allTasks
   .querySelector('template.tasks__task-template')
+const errorTemplate = document.querySelector('template.errors')
 
 
 function gatherTaskData(event) {
@@ -91,4 +92,11 @@ function arrayToTasks(tasks) {
   updateTasks()
 }
 
-module.exports = {arrayToTasks, addButton, createForm, gatherTaskData}
+function postError(err) {
+  let newError = document.importNode(errorTemplate.content, true)
+  newError.querySelector(".error__message").textContent = err
+  let mainWindow = document.querySelector('.main-window')
+  mainWindow.insertBefore(newError, errorTemplate)
+}
+
+module.exports = {arrayToTasks, addButton, createForm, gatherTaskData, postError}

@@ -256,9 +256,16 @@ describe('Application launch', function () {
     await app.client.element('.tasks__add-button button').click()
     await app.client.$("input[name='description']").addValue('test')
     await app.client.$('.tasks__add-button li button').click()
-
-    // await app.client.debug()
     let addedTask = await Task.all
     assert.notEqual(initialTasks.length, addedTask.length)
   });
+  it("does not add an empty task", async function(){
+    let initialTasks = await Task.all
+    await app.client.element('.tasks__add-button button').click()
+    await app.client.$('.tasks__add-button li button').click()
+    let addedTask = await Task.all
+    assert.equal(initialTasks.length, addedTask.length)
+    let elementExist = await app.client.isExisting('.error__message')
+    assert.equal(elementExist, true)
+  })
 })

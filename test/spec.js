@@ -223,37 +223,42 @@ describe('Working off of testDB', function(){
   })
 })
 
-// describe('Application launch', function () {
-//   let debuggerMode = true
-//   debuggerMode ? this.timeout(100000000000) : this.timeout(10000)
-//
-//   beforeEach(function () {
-//     app = new Application({
-//       path: electronPath,
-//       args: [path.join(__dirname, '..')]
-//     })
-//     return app.start()
-//   })
-//
-//   afterEach(function () {
-//     if (app && app.isRunning()) {
-//       revertData()
-//       return app.stop()
-//     }
-//   })
-//
-//   it('shows an initial window', function () {
-//     return app.client.getWindowCount().then(function (count) {
-//       assert.equal(count, 2)
-//       // Please note that getWindowCount() will return 2 if `dev tools` are opened.
-//       // assert.equal(count, 2)
-//     })
-//   })
-//
-//   it("adds a new task", async function () {
-//     await app.client.element('.tasks__add-button button').click()
-//     await app.client.$("input[name='description']").addValue('test')
-//     await app.client.debug()
-//     assert.notEqual(realDB.tasks.length, testDB.tasks.length)
-//   });
-// })
+describe('Application launch', function () {
+  let debuggerMode = true
+  debuggerMode ? this.timeout(100000000000) : this.timeout(10000)
+
+  beforeEach(function () {
+    app = new Application({
+      path: electronPath,
+      args: [path.join(__dirname, '..')],
+      env: "Test"
+    })
+    return app.start()
+  })
+
+  afterEach(function () {
+    if (app && app.isRunning()) {
+      resetToBoilerPlate()
+      return app.stop()
+    }
+  })
+
+  it.skip('shows an initial window', function () {
+    return app.client.getWindowCount().then(function (count) {
+      assert.equal(count, 2)
+      // Please note that getWindowCount() will return 2 if `dev tools` are opened.
+      assert.equal(count, 2)
+    })
+  })
+
+  it("adds a new task", async function () {
+    let initialTasks = await Task.all
+    await app.client.element('.tasks__add-button button').click()
+    await app.client.$("input[name='description']").addValue('test')
+    await app.client.$('.tasks__add-button li button').click()
+
+    // await app.client.debug()
+    let addedTask = await Task.all
+    assert.notEqual(initialTasks.length, addedTask.length)
+  });
+})

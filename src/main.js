@@ -37,35 +37,28 @@ app.on('activate', function () {
   if (mainWindow === null) createWindow()
 })
 
-ipcMain.on('startDBLoad', _=> {
-  mainWindow.webContents.send('loadDB', db.loadData())
+async function updateTasks(){
+  let allTasks = await Task.all
+  mainWindow.webContents.send('loadDB', allTasks)
+}
+
+ipcMain.on('startDBLoad', async _=> {
+  updateTasks()
 })
 
-ipcMain.on('insertIntoDB', (evt, data)=> {
-  db.createTask(data, err => {
-    if (err) {throw err}
-    else {
-      mainWindow.webContents.send('loadDB', db.loadData())
-    }
-  });
+ipcMain.on('insertIntoDB', async (evt, data)=> {
+  await Task.create(data);
+  updateTasks()
 })
 
-ipcMain.on('deleteFromDB', (evt, taskID, taskSortNumber)=>{
-  db.deleteTask(taskID, taskSortNumber,  err =>{
-    if (err) {throw err}
-    else {
-      mainWindow.webContents.send('loadDB', db.loadData())
-    }
-  })
+ipcMain.on('deleteFromDB', async (evt, data)=>{
+  await Task.delete(data);
+  updateTasks()
 })
 
-ipcMain.on('editTask', (evt, taskData)=>{
-  db.editTask(taskData,  err =>{
-    if (err) {throw err}
-    else {
-      mainWindow.webContents.send('loadDB', db.loadData())
-    }
-  })
+ipcMain.on('editTask', async (evt, taskData)=>{
+  await Task.update(data);
+  updateTasks()
 })
 
 

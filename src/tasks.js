@@ -54,7 +54,7 @@ function createTask(task) {
     let taskContainer = event.target.parentElement.parentElement
     let id = taskContainer.dataset.taskId
     let sort = taskContainer.dataset.sort
-    ipc.send('deleteFromDB', id, sort)
+    ipc.send('deleteFromDB', {id: id})
   })
 
   // Edit Task Event Listener
@@ -85,12 +85,10 @@ function clearTaskNodes() {
   while (taskList.firstChild) {taskList.removeChild(taskList.firstChild)}
 }
 
-function jsonToTasks(json) {
+function arrayToTasks(tasks) {
   clearTaskNodes()
-  for (let task of json.tasks) {
-    createTask(task)
-  }
+  tasks.forEach((task) => createTask(task))
   updateTasks()
 }
 
-module.exports = {jsonToTasks, addButton, createForm, gatherTaskData}
+module.exports = {arrayToTasks, addButton, createForm, gatherTaskData}

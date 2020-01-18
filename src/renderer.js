@@ -6,8 +6,8 @@ window.addEventListener('DOMContentLoaded', () => {
   ipc.send('startDBLoad')
 })
 
-ipc.on('loadDB', (ext, data)=>{
-  tasks.jsonToTasks(data)
+ipc.on('loadDB', (ext, taskList)=>{
+  tasks.arrayToTasks(taskList)
 })
 
 

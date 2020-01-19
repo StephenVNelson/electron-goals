@@ -250,6 +250,14 @@ describe('Application launch', function () {
       assert.equal(count, 2)
     })
   })
+  it.skip('does not have the developer tools open', async () => {
+    const devToolsAreOpen = await app.client
+      .waitUntilWindowLoaded()
+      .browserWindow.isDevToolsOpened();
+    return assert.equal(devToolsAreOpen, false);
+  });
+
+
 
   it("adds a new task", async function () {
     let initialTasks = await Task.all
@@ -268,4 +276,29 @@ describe('Application launch', function () {
     let elementExist = await app.client.isExisting('.error__message')
     assert.equal(elementExist, true)
   })
+  it("edits a task from the browser",async function () {
+    await app.client.waitUntilWindowLoaded()
+    let editButton = app.client
+      .$("div[data-task-id='K4QM5M1PJI92M']")
+      .$('.tasks__edit')
+    await editButton.click()
+    await app.client
+      .$("input[value='K4QM5M1PJI92M']")
+      .$('..')
+      .$("input[name='description']")
+      .setValue('Edited Task')
+    await app.client
+      .$("input[value='K4QM5M1PJI92M']")
+      .$('..')
+      .$('button')
+      .click()
+    let newLastTask = await Task.latest
+    assert.equal(newLastTask.description, 'Edited Task')
+    let lastTaskText = await app.client
+      .$("div[data-task-id='K4QM5M1PJI92M']")
+      .$(".tasks__task-options")
+      .getText()
+    assert(lastTaskText, 'Edited Task')
+    // await app.client.debug()
+  });
 })

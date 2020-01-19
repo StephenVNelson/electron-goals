@@ -6,7 +6,7 @@
   "scripts": {
     "start": "electron .",
     "test": "NODE_ENV=test mocha",
-    "test-debugger": "mocha --inpsect-brk ./test/spec.js"
+    "test-debugger": "NODE_ENV=test mocha -- debug"
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [

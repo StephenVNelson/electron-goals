@@ -2,12 +2,12 @@ const Application = require('spectron').Application
 const assert = require('assert')
 const electronPath = require('electron') // Require Electron from the binaries included in node_modules.
 
-const {Task} = require('../db/task.js')
+const {Task} = require('../src/backend/task.js')
 Task.test = true // this must be true in order to use the test database
 const fs = require('fs')
 const {promises} = fs
 const path = require('path')
-const {DB} = require('../db/db.js')
+const {DB} = require('../src/backend/db.js')
 
 
 async function resetToBoilerPlate(){

@@ -65,8 +65,16 @@ ipcMain.on('deleteFromDB', async (evt, data)=>{
 })
 
 ipcMain.on('editTask', async (evt, taskData)=>{
-  await Task.update(data);
-  updateTasks()
+  try{
+    await Task.update(taskData);
+    updateTasks()
+  }
+  catch(err) {
+    mainWindow.webContents.send('postError', {
+      message: err.message,
+      stack: err.stack
+    })
+  }
 })
 
 
